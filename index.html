@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuala Lumpur Cultural Heritage - Presentation Hub</title>
+    <!-- Tailwind CSS for modern layout design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for interactive demographic visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030f0d; 
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        .heritage-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Repeating custom SVG Gold Songket motif background overlay */
+        .songket-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40 Z' fill='none' stroke='%23d4af37' stroke-opacity='0.03' stroke-width='1'/%3E%3Cpolygon points='40,20 46,34 60,40 46,46 40,60 34,46 20,40 34,34' fill='%23d4af37' fill-opacity='0.02'/%3E%3Ccircle cx='40' cy='40' r='2' fill='%23d4af37' fill-opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* Glassmorphism containers with gold highlighting */
+        .custom-glass {
+            background: rgba(6, 24, 21, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.12);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .custom-glass:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 12px 40px -10px rgba(212, 175, 55, 0.08);
+        }
+
+        /* Active tab button styling with rich gold gradient */
+        .active-tab {
+            background: linear-gradient(135deg, #d4af37 0%, #b8901c 100%);
+            color: #030f0d !important;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+        }
+
+        /* Subtle glowing elements */
+        .gold-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Custom scrollbar matching forest-teal and gold */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030f0d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12 flex flex-col songket-overlay">
+
+    <!-- Gold Ribbon top border -->
+    <div class="h-1.5 w-full bg-gradient-to-r from-[#d4af37] via-[#f7e09a] to-[#b8901c] sticky top-0 z-50"></div>
+
+    <!-- Main Header -->
+    <header class="w-full border-b border-[#d4af37]/10 bg-[#030f0d]/90 py-6 px-4 md:px-8 relative z-40">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6">
+            
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-[#d4af37]/10 text-[#d4af37] rounded-2xl border border-[#d4af37]/30 flex items-center justify-center gold-glow">
+                    <!-- Wau Bulan Custom Icon representation -->
+                    <svg class="w-9 h-9" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4C32 4 44 20 44 32C44 44 32 52 32 52C32 52 20 44 20 32C20 20 32 4 32 4Z" stroke="#d4af37" stroke-width="2"/>
+                        <path d="M12 32C24 32 32 42 32 52C32 42 40 32 52 32" stroke="#d4af37" stroke-width="2"/>
+                        <path d="M16 22C24 26 32 28 32 28C32 28 40 26 48 22" stroke="#d4af37" stroke-width="1.5"/>
+                        <path d="M32 52V60" stroke="#d4af37" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-[#f7e09a] to-[#d4af37] bg-clip-text text-transparent heritage-font">
+                        Kuala Lumpur Cultural Preservation
+                    </h1>
+                    <p class="text-xs md:text-sm text-gray-400 font-medium flex items-center gap-1.5 mt-1">
+                        <span class="text-[#d4af37]">✦</span> Keeping traditional crafts, arts, and games alive in a digital world <span class="text-[#d4af37]">✦</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Presenter Utility Box (Perfect for the 15-minute presentation) -->
+            <div class="flex flex-wrap items-center gap-4 bg-[#061d19] px-4 py-3 rounded-2xl border border-[#d4af37]/20 shadow-md">
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider block">Pitch Timer:</span>
+                    <div id="timerDisplay" class="text-xl font-mono font-black text-[#d4af37] bg-black/40 px-3 py-1 rounded-lg border border-[#d4af37]/10">15:00</div>
+                </div>
+                <div class="flex gap-2">
+                    <button id="timerToggle" onclick="toggleTimer()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 transition">
+                        <i id="playIcon" class="fa-solid fa-play"></i> Start
+                    </button>
+                    <button onclick="resetTimer()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg text-xs font-bold transition">
+                        Reset
+                    </button>
+                </div>
+                <div class="h-6 w-[1px] bg-gray-700 hidden sm:block"></div>
+                <a href="https://s20201094-spec.github.io/KLEG/" target="_blank" class="px-3 py-1.5 bg-[#d4af37]/10 hover:bg-[#d4af37]/20 border border-[#d4af37]/30 text-[#d4af37] rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-gamepad"></i> Try KLEG Game
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Tab Controls Menu Section -->
+    <div class="w-full bg-[#041613] border-b border-[#d4af37]/10 py-3 sticky top-[82px] z-30 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex gap-2 overflow-x-auto pb-1.5 scrollbar-thin">
+                <button onclick="switchTab('overview-tab', this)" class="tab-btn px-4 py-2 text-xs md:text-sm font-bold rounded-xl active-tab flex items-center gap-2 whitespace-nowrap text-white">
+                    <i class="fa-solid fa-chalkboard-user"></i> 1. Pitch Overview
+                </button>
+                <button onclick="switchTab('food-tab', this)" class="tab-btn px-4 py-2 text-xs md:text-sm font-bold rounded-xl text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
+                    <i class="fa-solid fa-bowl-food"></i> 2. Culinary Heritage (Sky)
+                </button>
+                <button onclick="switchTab('festivals-tab', this)" class="tab-btn px-4 py-2 text-xs md:text-sm font-bold rounded-xl text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
+                    <i class="fa-solid fa-fire"></i> 3. Festivals & Culture (Cathy/Lucas)
+                </button>
+                <button onclick="switchTab('arts-tab', this)" class="tab-btn px-4 py-2 text-xs md:text-sm font-bold rounded-xl text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
+                    <i class="fa-solid fa-palette"></i> 4. Islamic Museum Arts (Jolie)
+                </button>
+                <button onclick="switchTab('demographics-tab', this)" class="tab-btn px-4 py-2 text-xs md:text-sm font-bold rounded-xl text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
+                    <i class="fa-solid fa-chart-pie"></i> 5. KL Demographics Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="max-w-7xl mx-auto px-4 md:px-8 mt-8 w-full flex-grow relative z-10">
+
+        <!-- Custom Notification Alert Box (For system status or messages) -->
+        <div id="toastNotification" class="hidden fixed bottom-6 right-6 z-50 p-4 rounded-xl border border-[#d4af37]/30 bg-[#062420] text-gray-100 max-w-sm shadow-2xl flex items-start gap-3 transform translate-y-2 transition-all duration-300">
+            <div class="p-2 bg-[#d4af37]/15 text-[#d4af37] rounded-lg">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+                <p class="font-bold text-xs text-[#d4af37] uppercase tracking-wider">Heritage Notification</p>
+                <p id="toastMessage" class="text-xs text-gray-300 mt-1">Notification text here.</p>
+            </div>
+            <button onclick="hideToast()" class="text-gray-400 hover:text-white ml-auto text-xs"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- ==================== TAB 1: PITCH OVERVIEW ==================== -->
+        <section id="overview-tab" class="tab-content block space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Main Core Question Focus -->
+                <div class="col-span-12 lg:col-span-8 space-y-6">
+                    <div class="custom-glass p-8 rounded-3xl relative overflow-hidden">
+                        <div class="absolute -right-8 -top-8 w-32 h-32 bg-[#d4af37]/5 rounded-full pointer-events-none"></div>
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-[#d4af37] bg-[#d4af37]/10 px-3 py-1.5 rounded-full border border-[#d4af37]/20">
+                            The Grand Challenge Question
+                        </span>
+                        
+                        <h2 class="text-2xl md:text-4xl font-extrabold text-white mt-4 leading-tight heritage-font">
+                            How can we protect, or promote Kuala Lumpur’s traditional crafts, arts, and games so that younger generations keep them alive in a digital world?
+                        </h2>
+                        
+                        <p class="text-gray-300 text-sm md:text-base leading-relaxed mt-4">
+                            In a hyper-urbanized landscape like Kuala Lumpur, local culinary arts, indigenous games, and historic crafts risk being completely marginalized by modern technology and foreign commercial media. Our strategy utilizes web preservation systems, high-quality documentation, digital gamification <span class="text-[#d4af37] font-semibold">(KLEG game)</span>, and targeted modernization.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                            <div class="bg-[#030e0c]/80 p-4 rounded-xl border border-teal-500/10">
+                                <h4 class="font-bold text-white text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-file-code text-[#d4af37]"></i> Academic Framework
+                                </h4>
+                                <p class="text-xs text-gray-400 mt-1">Based on global insights on cultural diversity from UoN Malaysia Campus archives.</p>
+                            </div>
+                            <div class="bg-[#030e0c]/80 p-4 rounded-xl border border-teal-500/10">
+                                <h4 class="font-bold text-white text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-gamepad text-[#d4af37]"></i> Interactive Demonstration
+                                </h4>
+                                <p class="text-xs text-gray-400 mt-1">Explore our custom game build designed specifically for the modern generation.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide Roadmap Breakdown -->
+                    <div class="custom-glass p-6 rounded-3xl">
+                        <h3 class="text-lg font-bold text-white heritage-font mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-route text-[#d4af37]"></i> Interactive Team Slide Index (For Quick Reference)
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="p-4 bg-[#030e0c]/60 rounded-xl border border-[#d4af37]/10">
+                                <div class="text-xs font-bold text-[#d4af37] mb-1">Cathy & Lucas & Kacie</div>
+                                <h4 class="text-sm font-semibold text-white">Festivals & Multiracial Synthesis</h4>
+                                <p class="text-[11px] text-gray-400 mt-1">The dynamics of Raya, Deepavali, and the historic Orang Asli (Negrito) communities.</p>
+                            </div>
+                            <div class="p-4 bg-[#030e0c]/60 rounded-xl border border-[#d4af37]/10">
+                                <div class="text-xs font-bold text-[#d4af37] mb-1">Sky</div>
+                                <h4 class="text-sm font-semibold text-white">Culinary Heritage & Survival</h4>
+                                <p class="text-[11px] text-gray-400 mt-1">How logic-focused, regional branding preserves iconic ancestral dishes.</p>
+                            </div>
+                            <div class="p-4 bg-[#030e0c]/60 rounded-xl border border-[#d4af37]/10">
+                                <div class="text-xs font-bold text-[#d4af37] mb-1">Jan & Jolie</div>
+                                <h4 class="text-sm font-semibold text-white">Museum Treasures & 3D Tech</h4>
+                                <p class="text-[11px] text-gray-400 mt-1">Investigating structural design, ceramics, and 3D print capabilities for relics.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presenter Roles & Interactive Presentation Flow -->
+                <div class="col-span-12 lg:col-span-4 space-y-6">
+                    <div class="custom-glass p-6 rounded-3xl bg-gradient-to-br from-[#062420] via-[#041613] to-[#030f0d]">
+                        <h3 class="text-lg font-bold text-white heritage-font mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-users text-[#d4af37]"></i> Presentation Team Structure
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-3 bg-black/30 rounded-xl border border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-xs font-bold">L</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Lucas</h4>
+                                    <p class="text-[10px] text-gray-400">Multiculture Dynamics & Context Script</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-black/30 rounded-xl border border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-sky-600/30 text-sky-400 flex items-center justify-center text-xs font-bold">S</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Sky</h4>
+                                    <p class="text-[10px] text-gray-400">Preservation Strategies & KL Food Matrix</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-black/30 rounded-xl border border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-pink-600/30 text-pink-400 flex items-center justify-center text-xs font-bold">C</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Cathy</h4>
+                                    <p class="text-[10px] text-gray-400">Festivals Analysis & Inter-community Bonds</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-black/30 rounded-xl border border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-purple-600/30 text-purple-400 flex items-center justify-center text-xs font-bold">K</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Kacie</h4>
+                                    <p class="text-[10px] text-gray-400">Demographic Mapping & Board Visualization</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-black/30 rounded-xl border border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-amber-600/30 text-amber-400 flex items-center justify-center text-xs font-bold">J</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Jan</h4>
+                                    <p class="text-[10px] text-gray-400">Printing, 3D Models & Preservation Assets</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-black/30 rounded-xl border border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-teal-600/30 text-teal-400 flex items-center justify-center text-xs font-bold">J</div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Jolie</h4>
+                                    <p class="text-[10px] text-gray-400">Art Museum Masterpieces curation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CULINARY HERITAGE ==================== -->
+        <section id="food-tab" class="tab-content hidden space-y-8">
+            <div class="custom-glass p-8 rounded-3xl relative overflow-hidden">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-[#d4af37] bg-[#d4af37]/10 px-3 py-1.5 rounded-full border border-[#d4af37]/20">
+                    Heritage Foods & Preservation Blueprint
+                </span>
+                <h2 class="text-3xl font-extrabold text-white mt-4 heritage-font">Our Culinary Identity: How to Keep Traditions Alive</h2>
+                
+                <!-- Strategy Quick Nav -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+                    <div class="p-4 rounded-xl bg-[#030e0c] border border-[#d4af37]/10">
+                        <h4 class="font-bold text-[#d4af37] text-xs uppercase tracking-wide">1. Digitize Everything</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Record videos of elder cooks; catalog exact techniques like "pecah minyak".</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-[#030e0c] border border-[#d4af37]/10">
+                        <h4 class="font-bold text-[#d4af37] text-xs uppercase tracking-wide">2. Support Hawkers</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Directly digitize small family-run stalls with G-Maps and DuitNow QR systems.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-[#030e0c] border border-[#d4af37]/10">
+                        <h4 class="font-bold text-[#d4af37] text-xs uppercase tracking-wide">3. Modern Presentation</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Rebrand traditional snacks with aesthetic wrappers and modern urban pop-ups.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-[#030e0c] border border-[#d4af37]/10">
+                        <h4 class="font-bold text-[#d4af37] text-xs uppercase tracking-wide">4. Direct Education</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Integrate elder cooks directly into university academies and culinary classes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Food Section Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Festival Foods Card -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <h3 class="text-xl font-bold text-white border-b border-gray-700 pb-2 heritage-font flex items-center gap-2">
+                        <i class="fa-solid fa-cake-candles text-pink-400"></i> Festival Classics
+                    </h3>
+                    
+                    <div class="space-y-3 h-[420px] overflow-y-auto pr-2">
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <span class="text-[10px] text-[#d4af37] font-bold">HARI RAYA AIDILFITRI</span>
+                            <h4 class="font-bold text-white text-sm">Lemang, Ketupat & Beef Rendang</h4>
+                            <p class="text-xs text-gray-400 mt-1">Glutinous rice slow-roasted over bamboo logs paired with thick dry-simmered aromatic rendang curry.</p>
+                        </div>
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <span class="text-[10px] text-rose-400 font-bold">CHINESE NEW YEAR</span>
+                            <h4 class="font-bold text-white text-sm">Yee Sang (The Prosperity Toss)</h4>
+                            <p class="text-xs text-gray-400 mt-1">A colorful raw fish salad tossed high together while shouting "Lo Hei!" for good fortune.</p>
+                        </div>
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <span class="text-[10px] text-amber-400 font-bold">DEEPAVALI</span>
+                            <h4 class="font-bold text-white text-sm">Murukku & Laddu Sweets</h4>
+                            <p class="text-xs text-gray-400 mt-1">Savory spiral pastries made of rice flour paired with rich ghee-infused chickpea desserts.</p>
+                        </div>
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <span class="text-[10px] text-teal-400 font-bold">EAST MALAYSIA</span>
+                            <h4 class="font-bold text-white text-sm">Manok Pansoh (Bamboo Chicken)</h4>
+                            <p class="text-xs text-gray-400 mt-1">Legendary indigenous Sarawakian dish featuring chicken steamed in fresh bamboo logs with ginger flowers.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KL Exclusives Card -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <h3 class="text-xl font-bold text-white border-b border-gray-700 pb-2 heritage-font flex items-center gap-2">
+                        <i class="fa-solid fa-fire-burner text-[#d4af37]"></i> Born or Perfected in KL
+                    </h3>
+                    
+                    <div class="space-y-3 h-[420px] overflow-y-auto pr-2">
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <h4 class="font-bold text-white text-sm">KL Hokkien Mee ("The Black" Noodles)</h4>
+                            <p class="text-xs text-gray-400 mt-1">Thick egg noodles wok-tossed in high fire with rich lard and extremely dark sweet caramel soy sauce. Known for its intense "wok hei" smoky aroma.</p>
+                        </div>
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <h4 class="font-bold text-white text-sm">Chili Pan Mee</h4>
+                            <p class="text-xs text-gray-400 mt-1">Invented directly in Kuala Lumpur in the 1980s. A dry wheat noodle bowl topped with dynamic fried garlic chili paste and a perfectly poached egg.</p>
+                        </div>
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <h4 class="font-bold text-white text-sm">Nasi Lemak Ayam Goreng (KL Style)</h4>
+                            <p class="text-xs text-gray-400 mt-1">Our national dish elevated by KLites with ultra-crisp, heavily spiced whole leg fried chicken. Lines form for hours in historic Kampung Baru.</p>
+                        </div>
+                        <div class="bg-black/30 p-3 rounded-xl">
+                            <h4 class="font-bold text-white text-sm">Claypot Dry Bak Kut Teh</h4>
+                            <p class="text-xs text-gray-400 mt-1">The iconic KL variation: reduced with dark soy, squid shreds, and fiery bird's eye chilies in a sizzling hot claypot till intensely sticky.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actionable Strategy Matrix -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <h3 class="text-xl font-bold text-white border-b border-gray-700 pb-2 heritage-font flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i> Preservation Strategy
+                    </h3>
+                    
+                    <div class="space-y-4 text-xs">
+                        <div class="p-3 bg-red-950/20 border border-red-500/20 rounded-xl">
+                            <h4 class="font-bold text-red-400 flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> Threat: Vanishing Raw Materials</h4>
+                            <p class="text-gray-300 mt-1">Many traditional jungle produce and plants are becoming extinct around KL due to severe urbanization.</p>
+                        </div>
+                        <div class="p-3 bg-emerald-950/20 border border-emerald-500/20 rounded-xl">
+                            <h4 class="font-bold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-seedling"></i> Active Preservation: Supply Chain Bridges</h4>
+                            <p class="text-gray-300 mt-1">Connecting remote Orang Asli foragers and regional farmers to modern high-end KL dining entities.</p>
+                        </div>
+                        <div class="p-3 bg-blue-950/20 border border-blue-500/20 rounded-xl">
+                            <h4 class="font-bold text-blue-400 flex items-center gap-1"><i class="fa-solid fa-qrcode"></i> Digital Food Tourism</h4>
+                            <p class="text-gray-300 mt-1">Implementing a state-wide "Heritage Food Passport" via QR codes allowing explorers to earn rewards in heritage neighborhoods.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: FESTIVALS & MULTI-CULTURE ==================== -->
+        <section id="festivals-tab" class="tab-content hidden space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Main Festival Overview -->
+                <div class="col-span-12 lg:col-span-7 space-y-6">
+                    <div class="custom-glass p-6 rounded-3xl relative overflow-hidden">
+                        <h2 class="text-2xl font-bold text-white heritage-font flex items-center gap-2 mb-4">
+                            <span class="text-[#d4af37]">✦</span> Top Festivals of Kuala Lumpur
+                        </h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-emerald-950/10 border border-emerald-500/20 rounded-2xl relative">
+                                <span class="text-xs font-bold text-emerald-400 block mb-1">Marking End of Ramadan</span>
+                                <h3 class="text-lg font-bold text-white">Hari Raya Aidilfitri</h3>
+                                <p class="text-xs text-gray-300 mt-2">A celebration of thankfulness, community forgiveness, and family visits. Celebrated with sweet cookies, Duit Raya packets, and beautiful prayer ceremonies at local mosques.</p>
+                            </div>
+                            
+                            <div class="p-4 bg-amber-950/10 border border-amber-500/20 rounded-2xl relative">
+                                <span class="text-xs font-bold text-amber-400 block mb-1">Festival of Lights</span>
+                                <h3 class="text-lg font-bold text-white">Deepavali (Diwali)</h3>
+                                <p class="text-xs text-gray-300 mt-2">Symbolizing the historic victory of light over darkness and good over evil. Homes are adorned with decorative lights, temple prayers, and sweet homemade dessert spreads.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-black/40 rounded-xl border border-white/5">
+                            <h4 class="font-bold text-white text-xs uppercase tracking-wide mb-1">Community Integration Question:</h4>
+                            <p class="text-xs text-[#d4af37] italic">"Why do festivals like Hari Raya Aidilfitri and Deepavali in KL bring communities together the most, and what shows it?"</p>
+                            <p class="text-[11px] text-gray-400 mt-2">Answer: Open House Culture (Rumah Terbuka). Across KL, regardless of background or race, neighbors visit each other's homes to dine, laugh, and celebrate as one unified community.</p>
+                        </div>
+                    </div>
+
+                    <div class="custom-glass p-6 rounded-3xl">
+                        <h3 class="text-lg font-bold text-white heritage-font mb-2">Multiracial & Multicultural Demographics</h3>
+                        <p class="text-xs text-gray-400 mb-4">KL represents the ultimate fusion of various ethnic groups. Here is a breakdown of our collaborative structure:</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="p-3 bg-black/30 rounded-xl text-center">
+                                <div class="text-lg font-bold text-emerald-400">47.7%</div>
+                                <div class="text-xs text-white font-semibold">Malay (Bumiputera)</div>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl text-center">
+                                <div class="text-lg font-bold text-rose-400">41.6%</div>
+                                <div class="text-xs text-white font-semibold">Chinese Community</div>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl text-center">
+                                <div class="text-lg font-bold text-amber-400">10.0%</div>
+                                <div class="text-xs text-white font-semibold">Indian Community</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep Dive: Negrito / Orang Asli community -->
+                <div class="col-span-12 lg:col-span-5">
+                    <div class="custom-glass p-6 rounded-3xl space-y-4 border-l-4 border-[#d4af37] h-full">
+                        <div class="flex items-center gap-2 text-amber-400">
+                            <i class="fa-solid fa-person-shelter text-lg"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider">Indigenous Spotlights</span>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white heritage-font">The Negrito (Orang Asli)</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Historically the original inhabitants of Peninsular Malaysia, representing approximately <strong class="text-[#d4af37]">3%</strong> of the total Orang Asli demographic population.
+                        </p>
+
+                        <div class="p-4 bg-[#030e0c] rounded-xl space-y-3 border border-[#d4af37]/10">
+                            <h4 class="text-xs font-bold text-[#d4af37] uppercase tracking-wide">Challenges they face:</h4>
+                            
+                            <ul class="space-y-2 text-[11px] text-gray-400">
+                                <li class="flex gap-2">
+                                    <span class="text-[#d4af37]"><i class="fa-solid fa-tree-city"></i></span>
+                                    <span><strong>Loss of ancestral rainforests</strong> due to aggressive logging and modernization.</span>
+                                </li>
+                                <li class="flex gap-2">
+                                    <span class="text-[#d4af37]"><i class="fa-solid fa-heart-pulse"></i></span>
+                                    <span><strong>Healthcare disparities</strong> leading to high infant mortality compared to urban Malaysians.</span>
+                                </li>
+                                <li class="flex gap-2">
+                                    <span class="text-[#d4af37]"><i class="fa-solid fa-people-arrows"></i></span>
+                                    <span><strong>Loss of culture and language</strong> as younger members marry outward and assimilate.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="p-3 bg-[#d4af37]/5 border border-[#d4af37]/20 rounded-xl">
+                            <p class="text-xs text-[#d4af37] italic font-semibold">"While numerically very small and vulnerable today, their cultural, linguistic, and historical status as the original guardians of the peninsula remains of paramount significance."</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: ISLAMIC MUSEUM ARTS ==================== -->
+        <section id="arts-tab" class="tab-content hidden space-y-8">
+            <div class="custom-glass p-8 rounded-3xl relative overflow-hidden">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-[#d4af37] bg-[#d4af37]/10 px-3 py-1.5 rounded-full border border-[#d4af37]/20">
+                    Islamic Arts Museum Malaysia Exhibits
+                </span>
+                <h2 class="text-3xl font-extrabold text-white mt-4 heritage-font">Artworks & Craftsmanship: A Mirror of Civilizations</h2>
+                <p class="text-gray-300 text-sm mt-2 max-w-3xl">Explore iconic artifacts and architectural forms curated directly from historic Malay culture and the broader Islamic world.</p>
+            </div>
+
+            <!-- Exhibits Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Architecture Card -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <div class="p-3 bg-teal-500/10 text-teal-400 rounded-xl w-fit"><i class="fa-solid fa-gopuram text-2xl"></i></div>
+                    <h3 class="text-lg font-bold text-white heritage-font">1. Architectural Synthesis</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Malaysia’s structural architecture is a dynamic reflection of its multicultural heritage, seamlessly blending:
+                    </p>
+                    <ul class="space-y-1.5 text-xs text-gray-300">
+                        <li><span class="text-[#d4af37]">✦</span> Traditional Malay vernacular stilt housing</li>
+                        <li><span class="text-[#d4af37]">✦</span> Colonial-era European building elements</li>
+                        <li><span class="text-[#d4af37]">✦</span> Elegant Islamic geometric structures</li>
+                        <li><span class="text-[#d4af37]">✦</span> High-tech modern skyscrapers</li>
+                    </ul>
+                </div>
+
+                <!-- Arms and Armor Card -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <div class="p-3 bg-red-500/10 text-red-400 rounded-xl w-fit"><i class="fa-solid fa-shield text-2xl"></i></div>
+                    <h3 class="text-lg font-bold text-white heritage-font">2. Arms & Armour Collection</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        The museum houses over 1,400 years of arms and armor from across the global Islamic world (Ottoman, Persian, Mughal, and Malay).
+                    </p>
+                    <div class="bg-black/30 p-3 rounded-lg text-xs text-gray-300 space-y-1">
+                        <p class="font-bold text-[#d4af37]">Symbol of Status:</p>
+                        <p class="text-gray-400">Many of these weapons were crafted primarily as diplomatic gifts, ceremonial wear, and indicators of rank rather than for real combat.</p>
+                    </div>
+                </div>
+
+                <!-- Ceramics Card -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl w-fit"><i class="fa-solid fa-shapes text-2xl"></i></div>
+                    <h3 class="text-lg font-bold text-white heritage-font">3. Ceramics & Clay Vessels</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Traditional Malay utility and clay vessels fired manually using ancestral organic techniques:
+                    </p>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2 bg-black/20 rounded border border-[#d4af37]/10">
+                            <span class="font-bold text-[#d4af37]">Labu Sayong:</span> Water pitch from Perak smoothed with pebbles and fired with paddy husks to achieve its black shine.
+                        </div>
+                        <div class="p-2 bg-black/20 rounded border border-[#d4af37]/10">
+                            <span class="font-bold text-[#d4af37]">Belanga:</span> Round clay cooking pot used for even slow-cooking heat distribution.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metalwork Card -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <div class="p-3 bg-yellow-500/10 text-yellow-400 rounded-xl w-fit"><i class="fa-solid fa-gem text-2xl"></i></div>
+                    <h3 class="text-lg font-bold text-white heritage-font">4. Master Metalworks</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Malaysia is highly distinguished for its complex metallurgical traditions, featuring three main branches:
+                    </p>
+                    <div class="grid grid-cols-3 gap-2 text-center text-[10px] text-white font-bold">
+                        <div class="p-2 bg-black/40 rounded border border-white/5">Brassware</div>
+                        <div class="p-2 bg-black/40 rounded border border-white/5">Silversmithing</div>
+                        <div class="p-2 bg-black/40 rounded border border-white/5">Pewter crafting</div>
+                    </div>
+                </div>
+
+                <!-- Textiles Card -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4">
+                    <div class="p-3 bg-pink-500/10 text-pink-400 rounded-xl w-fit"><i class="fa-solid fa-scissors text-2xl"></i></div>
+                    <h3 class="text-lg font-bold text-white heritage-font">5. Exquisite Textile Arts</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Woven visual history representing spiritual patterns and physical identity:
+                    </p>
+                    <div class="space-y-2 text-xs text-gray-300">
+                        <p><strong>Batik:</strong> Indigenous manual wax-resist dyeing art with rich organic shapes representing local flora.</p>
+                        <p><strong>Songket:</strong> Luxurious handwoven fabric featuring shimmering gold or silver metallic threads woven onto premium silk layers.</p>
+                    </div>
+                </div>
+
+                <!-- Jan's 3D Tech Printing Connection -->
+                <div class="custom-glass p-6 rounded-2xl space-y-4 bg-gradient-to-br from-[#062420] to-[#030e0c]">
+                    <div class="p-3 bg-purple-500/10 text-purple-400 rounded-xl w-fit"><i class="fa-solid fa-cube text-2xl"></i></div>
+                    <h3 class="text-lg font-bold text-white heritage-font text-[#d4af37]">6. Digital & 3D Printing (Jan)</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        To preserve fragile structures, our technical architecture highlights using **3D Scanning and 3D printing** to recreate exact, tactile models of these museum pieces.
+                    </p>
+                    <div class="p-2.5 bg-black/30 rounded border border-[#d4af37]/10 text-[10px] text-[#d4af37] font-semibold text-center">
+                        Allows students worldwide to download and examine physical relics offline!
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: DEMOGRAPHICS DASHBOARD ==================== -->
+        <section id="demographics-tab" class="tab-content hidden space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Chart Section (Left Col) -->
+                <div class="col-span-12 lg:col-span-6 flex flex-col gap-6">
+                    <div class="custom-glass p-6 rounded-3xl flex-grow flex flex-col justify-between relative overflow-hidden">
+                        
+                        <div>
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                                <h2 class="text-xl font-bold text-white tracking-wide heritage-font flex items-center gap-2">
+                                    <span class="text-[#d4af37] text-sm">✦</span> Interactive Population Split
+                                </h2>
+                                
+                                <div class="inline-flex rounded-xl bg-[#030e0c] p-1 border border-[#d4af37]/20">
+                                    <button id="btnCitizens" class="px-4 py-2 text-xs font-bold rounded-lg transition-all duration-300 active-tab text-white" onclick="switchData('citizens')">
+                                        Citizens Only
+                                    </button>
+                                    <button id="btnTotal" class="px-4 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition-all duration-300" onclick="switchData('total')">
+                                        All Residents
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-6">
+                                Toggle to explore either the legal citizen demographics or the total resident population (including the diverse 10.5% expatriate and international worker segment).
+                            </p>
+                        </div>
+
+                        <!-- Canvas Wrapper -->
+                        <div class="relative w-full max-w-[340px] md:max-w-[380px] mx-auto aspect-square my-4 p-4 rounded-full border border-[#d4af37]/10 bg-[#041412]/50 shadow-inner">
+                            <canvas id="demographicsChart"></canvas>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-[#d4af37]/10 flex justify-between items-center text-[11px] text-gray-400 font-semibold tracking-wider">
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle text-emerald-500 text-[8px]"></i> Citizens: 1.79M</span>
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle text-[#d4af37] text-[8px]"></i> Total: 2.00M</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Profile Panel (Right Col) -->
+                <div class="col-span-12 lg:col-span-6 flex flex-col gap-6">
+                    <div class="custom-glass p-6 rounded-3xl flex-grow">
+                        <h2 class="text-xl font-bold mb-2 text-white heritage-font flex items-center gap-2">
+                            <span class="text-[#d4af37] text-sm">✦</span> Heritage Enclaves Mapping
+                        </h2>
+                        <p class="text-xs text-gray-400 mb-6">Click on any community card below to highlight and select their segment on the donut chart above.</p>
+
+                        <!-- Profile List Segment Cards -->
+                        <div class="space-y-4">
+                            <!-- Bumiputera (Malays) -->
+                            <div onclick="highlightSegment(0)" class="group cursor-pointer p-4 rounded-2xl bg-[#030f0d]/60 border-l-4 border-emerald-500 border-t border-r border-b border-[#d4af37]/10 hover:border-emerald-500/50 hover:bg-emerald-950/10 transition duration-300 relative overflow-hidden">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                                        <h3 class="font-bold text-white group-hover:text-emerald-400 transition-colors">Bumiputera (Malays)</h3>
+                                    </div>
+                                    <span class="text-xs font-extrabold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded border border-emerald-500/20">47.7% / 42.7%</span>
+                                </div>
+                                <p class="text-xs text-gray-300 mt-2"><strong>Heritage Enclave:</strong> Kampung Baru & Datuk Keramat.</p>
+                                <p class="text-xs text-gray-400 mt-1"><strong>Architectural Landmarks:</strong> National Mosque & historic Masjid Jamek.</p>
+                            </div>
+
+                            <!-- Chinese -->
+                            <div onclick="highlightSegment(1)" class="group cursor-pointer p-4 rounded-2xl bg-[#030f0d]/60 border-l-4 border-rose-500 border-t border-r border-b border-[#d4af37]/10 hover:border-rose-500/50 hover:bg-rose-950/10 transition duration-300 relative overflow-hidden">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                                        <h3 class="font-bold text-white group-hover:text-rose-400 transition-colors">Kuala Lumpur Chinese</h3>
+                                    </div>
+                                    <span class="text-xs font-extrabold text-rose-400 bg-rose-950/80 px-2.5 py-0.5 rounded border border-rose-500/20">41.6% / 37.2%</span>
+                                </div>
+                                <p class="text-xs text-gray-300 mt-2"><strong>Heritage Enclave:</strong> Chinatown (Petaling Street), Cheras, & Kepong.</p>
+                                <p class="text-xs text-gray-400 mt-1"><strong>Architectural Landmarks:</strong> Thean Hou Temple atop Robson Heights.</p>
+                            </div>
+
+                            <!-- Indian -->
+                            <div onclick="highlightSegment(2)" class="group cursor-pointer p-4 rounded-2xl bg-[#030f0d]/60 border-l-4 border-amber-500 border-t border-r border-b border-[#d4af37]/10 hover:border-amber-500/50 hover:bg-amber-950/10 transition duration-300 relative overflow-hidden">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                                        <h3 class="font-bold text-white group-hover:text-amber-400 transition-colors">Kuala Lumpur Indians</h3>
+                                    </div>
+                                    <span class="text-xs font-extrabold text-amber-400 bg-amber-950/80 px-2.5 py-0.5 rounded border border-amber-500/20">10.0% / 9.0%</span>
+                                </div>
+                                <p class="text-xs text-gray-300 mt-2"><strong>Heritage Enclave:</strong> Brickfields (Little India) & Sentul.</p>
+                                <p class="text-xs text-gray-400 mt-1"><strong>Architectural Landmarks:</strong> Batu Caves Lord Murugan Temple Complex.</p>
+                            </div>
+
+                            <!-- Expatriates / Non-Citizens -->
+                            <div onclick="highlightSegment(4)" id="expatGroupCard" class="group cursor-pointer p-4 rounded-2xl bg-[#030f0d]/60 border-l-4 border-[#d4af37] border-t border-r border-b border-[#d4af37]/10 hover:border-[#d4af37]/50 hover:bg-[#d4af37]/5 transition duration-300 relative overflow-hidden opacity-40">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-2.5 h-2.5 rounded-full bg-[#d4af37]"></div>
+                                        <h3 class="font-bold text-white group-hover:text-[#d4af37] transition-colors">Global Citizens & Expats</h3>
+                                    </div>
+                                    <span class="text-xs font-extrabold text-[#d4af37] bg-yellow-950/80 px-2.5 py-0.5 rounded border border-[#d4af37]/20">N/A / 10.5%</span>
+                                </div>
+                                <p class="text-xs text-gray-300 mt-2"><strong>Heritage Enclave:</strong> Mont Kiara, Bangsar, & Embassy Row.</p>
+                                <p class="text-xs text-gray-400 mt-1"><strong>Note:</strong> Highlight this group by switching chart modes to "All Residents".</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Interactive Unified cultural footer -->
+    <section class="max-w-7xl mx-auto px-4 md:px-8 mt-8 w-full">
+        <div class="p-6 rounded-3xl bg-gradient-to-br from-[#062420] via-[#041916] to-[#020d0b] border border-[#d4af37]/25 relative overflow-hidden shadow-2xl">
+            <h3 class="font-bold text-white text-md flex items-center gap-2 mb-4 heritage-font">
+                <i class="fa-solid fa-hands-holding text-[#d4af37]"></i> Synthesized Modern Preservation Plan: KLEG Game Link
+            </h3>
+            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                To answer our grand question, our team designed **KLEG (Kuala Lumpur Ethnic Games)** to expose students directly to these disappearing arts. By creating high-fidelity, interactive digital versions of ancestral pastimes, we can make cultural literacy viral again.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="https://s20201094-spec.github.io/KLEG/" target="_blank" class="px-5 py-2.5 bg-gradient-to-r from-[#d4af37] to-[#b8901c] text-[#030f0d] rounded-xl font-bold text-xs shadow-lg hover:shadow-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad text-sm"></i> Launch the KLEG Webgame Directly
+                </a>
+                <button onclick="showToast('Your presentation is set to stay on schedule! Good luck presenting!')" class="px-5 py-2.5 bg-black/40 border border-[#d4af37]/35 text-[#d4af37] rounded-xl font-bold text-xs hover:bg-[#d4af37]/10 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check"></i> Trigger Presentation Prompt
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with Songket border line -->
+    <footer class="text-center text-[10px] md:text-xs text-gray-500 mt-12 w-full px-4">
+        <div class="h-[1px] max-w-xs mx-auto bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent mb-4"></div>
+        <p>&copy; 2026 Kuala Lumpur Cultural Heritage Academic Team. Made with precision for your 15-minute showcase pitch.</p>
+    </footer>
+
+    <!-- Javascript Controls -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId, btn) {
+            // Hide all tab sections
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            
+            // Show active tab
+            const target = document.getElementById(tabId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+
+            // Remove active classes from tab buttons
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active-tab');
+                b.classList.add('text-gray-400');
+            });
+
+            // Set current button active
+            btn.classList.add('active-tab');
+            btn.classList.remove('text-gray-400');
+
+            showToast(`Navigated to Tab: ${btn.innerText.trim()}`);
+        }
+
+        // Custom Notification Toast logic
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            msgEl.innerText = message;
+            
+            toast.classList.remove('hidden');
+            toast.classList.remove('translate-y-2');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                hideToast();
+            }, 5000);
+        }
+
+        function hideToast() {
+            const toast = document.getElementById('toastNotification');
+            toast.classList.add('hidden');
+        }
+
+        // Presenter countdown timer logic (15 minutes)
+        let countdownTime = 15 * 60; // 15 mins in seconds
+        let timerInterval = null;
+
+        function toggleTimer() {
+            const toggleBtn = document.getElementById('timerToggle');
+            const playIcon = document.getElementById('playIcon');
+
+            if (timerInterval) {
+                // Pause timer
+                clearInterval(timerInterval);
+                timerInterval = null;
+                toggleBtn.classList.remove('bg-amber-600');
+                toggleBtn.classList.add('bg-emerald-600');
+                toggleBtn.innerHTML = '<i class="fa-solid fa-play"></i> Resume';
+                showToast("Presentation Timer Paused");
+            } else {
+                // Start timer
+                timerInterval = setInterval(() => {
+                    if (countdownTime <= 0) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        document.getElementById('timerDisplay').innerText = "00:00";
+                        showToast("Your 15-minute presentation time is complete!");
+                        return;
+                    }
+                    countdownTime--;
+                    updateTimerDisplay();
+                }, 1000);
+
+                toggleBtn.classList.remove('bg-emerald-600');
+                toggleBtn.classList.add('bg-amber-600');
+                toggleBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+                showToast("Presentation Timer Started!");
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            countdownTime = 15 * 60;
+            updateTimerDisplay();
+            const toggleBtn = document.getElementById('timerToggle');
+            toggleBtn.className = "px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 transition";
+            toggleBtn.innerHTML = '<i id="playIcon" class="fa-solid fa-play"></i> Start';
+            showToast("Presentation Timer Reset to 15:00");
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(countdownTime / 60);
+            const secs = countdownTime % 60;
+            const displayStr = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').innerText = displayStr;
+        }
+
+        // Chart.js Configuration
+        const datasetCitizens = {
+            labels: ['Bumiputera (Malays)', 'Chinese', 'Indians', 'Others'],
+            data: [47.7, 41.6, 10.0, 0.7],
+            populations: [853830, 744640, 179000, 12530],
+            colors: ['#10b981', '#f43f5e', '#f59e0b', '#8b5cf6']
+        };
+
+        const datasetTotal = {
+            labels: ['Bumiputera (Malays)', 'Chinese', 'Indians', 'Others', 'Non-Citizens / Expats'],
+            data: [42.69, 37.23, 8.95, 0.63, 10.5],
+            populations: [853830, 744640, 179000, 12530, 210000],
+            colors: ['#10b981', '#f43f5e', '#f59e0b', '#8b5cf6', '#d4af37']
+        };
+
+        let currentMode = 'citizens';
+        let mainChart;
+
+        window.onload = function() {
+            const ctx = document.getElementById('demographicsChart').getContext('2d');
+            
+            mainChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: datasetCitizens.labels,
+                    datasets: [{
+                        data: datasetCitizens.data,
+                        backgroundColor: datasetCitizens.colors,
+                        borderColor: '#030f0d',
+                        borderWidth: 4,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#d1d5db',
+                                padding: 22,
+                                font: {
+                                    family: 'Plus Jakarta Sans',
+                                    size: 11,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#030f0d',
+                            titleColor: '#d4af37',
+                            bodyColor: '#e5e7eb',
+                            borderColor: 'rgba(212, 175, 55, 0.25)',
+                            borderWidth: 1.5,
+                            padding: 12,
+                            boxPadding: 6,
+                            callbacks: {
+                                label: function(context) {
+                                    const index = context.dataIndex;
+                                    const meta = currentMode === 'citizens' ? datasetCitizens : datasetTotal;
+                                    const value = context.parsed;
+                                    const population = meta.populations[index].toLocaleString();
+                                    return ` ${context.label}: ${value}% (~${population} citizens)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '72%'
+                }
+            });
+        };
+
+        function switchData(mode) {
+            currentMode = mode;
+            const btnCitizens = document.getElementById('btnCitizens');
+            const btnTotal = document.getElementById('btnTotal');
+            const expatCard = document.getElementById('expatGroupCard');
+
+            if (mode === 'citizens') {
+                btnCitizens.classList.add('active-tab');
+                btnTotal.classList.remove('active-tab');
+                btnTotal.classList.add('text-gray-400');
+                
+                expatCard.classList.add('opacity-40');
+
+                mainChart.data.labels = datasetCitizens.labels;
+                mainChart.data.datasets[0].data = datasetCitizens.data;
+                mainChart.data.datasets[0].backgroundColor = datasetCitizens.colors;
+            } else {
+                btnTotal.classList.add('active-tab');
+                btnCitizens.classList.remove('active-tab');
+                btnCitizens.classList.add('text-gray-400');
+                
+                expatCard.classList.remove('opacity-40');
+
+                mainChart.data.labels = datasetTotal.labels;
+                mainChart.data.datasets[0].data = datasetTotal.data;
+                mainChart.data.datasets[0].backgroundColor = datasetTotal.colors;
+            }
+            mainChart.update();
+            showToast(`Switched chart to: ${mode === 'citizens' ? 'Citizens Only' : 'All Residents'}`);
+        }
+
+        function highlightSegment(index) {
+            if (currentMode === 'citizens' && index === 4) {
+                switchData('total');
+            }
+            
+            mainChart.setActiveElements([{ datasetIndex: 0, index: index }]);
+            mainChart.update();
+            showToast(`Highlighting slice: ${mainChart.data.labels[index]}`);
+        }
+    </script>
+</body>
+</html>
